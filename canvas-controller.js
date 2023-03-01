@@ -1010,6 +1010,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     const awslambda = '/glacier/snake/score/upload'
 
     setTimeout(function(){
+      console.log('score upload...')
       try {
         namedisp = document.getElementById('namedisplay');
         name = namedisp.innerHTML.replace('Name: ','') || 'unknown';
@@ -1031,16 +1032,19 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
          
           console.log('ye');
           // acutally do it rn
-          if (true && !autopilot && score != 0){
+          if (true && score != 0){
             async function start(){
               try {
                 const resp = await fetch(awslambda, {
                   method: 'POST',
-                  body: {
+                  headers: {
+                    'content-type': 'application/json'
+                  },
+                  body: JSON.stringify({
                     'name': name,
                     'point': score,
                     'time': elapsedtime,
-                  }
+                  })
                 }).then(r => r.json())
                 console.log(resp)
                 } catch(error) {
@@ -1137,7 +1141,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         snakeclr += "";
         lost = true;
       })();
-    },1500);
+    }, 1500);
   })();
 })();
 

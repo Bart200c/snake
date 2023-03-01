@@ -4,8 +4,8 @@
   const resp = await fetch(awslambda).then(r => r.json());
 
   // [{'name': 'glacier-001', 'point': 36.8, 'time': 36.997}]
-  var names = resp.scores.map(s => s.name)
-  var scores = resp.scores;
+  var names = resp.map(s => s.name)
+  var scores = resp;
 
   let ln = document.getElementById('loadnotif');
   ln.textContent = "Loading and sorting leaderboard data...      This might take a few seconds, we have "+names.length+" entries to sort";

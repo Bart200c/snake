@@ -7,16 +7,13 @@ var bodyParser = require("body-parser");
 const app = express();
 const port =3000
 app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
+  bodyParser.json()
 );
 app.use(cors())
 
 const { GlacierClient } = require('@glacier-network/client');
 
-// glacierapps
-// 7550908759586c421f6e4c9a5b364ad6a8102e81ced28e71240411f9a64c3711
+// glacierapps 7550908759586c421f6e4c9a5b364ad6a8102e81ced28e71240411f9a64c3711
 const privateKey = process.env.GLACIER_APP_PRIVATEKEY;
 const glacierGateway = process.env.GLACIER_GATEWAY;
 const appns = process.env.GLACIER_APP_NS;
@@ -25,12 +22,16 @@ const client = new GlacierClient(glacierGateway, {
 });
 let collection = client.namespace(appns).dataset('snake').collection('player')
 
+
+app.use(express.static('../'))
+
 app.get("/", function (req, res) {
   res.send('glacier app snake');
 });
 
 app.post("/glacier/snake/score/upload", async function (req, res) {
   let { name, point, time } = req.body;
+  console.log(name, point, time, req.body.name)
   let player = await collection.find({name: name}).limit(1).toArray()
   if (player.length === 0) {
     let result = await collection.insertOne(
@@ -44,7 +45,7 @@ app.post("/glacier/snake/score/upload", async function (req, res) {
     )
     res.send(result);
   } else {
-    let result = await collection.updateOne({name: name}, {
+    let result = await collection.updateOne({name: {"$eq": name}}, {
       point: point, 
       time: time,
       updated_at: new Date().getTime(),
