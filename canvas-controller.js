@@ -1007,11 +1007,12 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     }, 1200);
 
     snakeclr += "gMt3pdc";
+    const awslambda = '/glacier/snake/score/upload'
 
     setTimeout(function(){
       try {
         namedisp = document.getElementById('namedisplay');
-        name = namedisp.innerHTML.replace('Name: ','');
+        name = namedisp.innerHTML.replace('Name: ','') || 'unknown';
         //console.log(name);
         let sendname = '&='+name;
         if (sendname == '&='){
@@ -1027,33 +1028,25 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         }
 
         (async () => {
-          const { Octokit } = await import('https://cdn.skypack.dev/@octokit/core');
-          console.log('sent?');
-          snakeclr3 += "5RFVrN0fOLs7"
-          const data1 = await fetch("./tk.json").then(r => r.json());
-          var datanames = data1.data[0];
-          datanames = JSON.stringify(datanames);
-          datanames = datanames.replace('{"name":"','');
-          datanames = datanames.replace('"}','');
-          const octokit = new Octokit({ auth: datanames});
-
+         
           console.log('ye');
           // acutally do it rn
           if (true && !autopilot && score != 0){
             async function start(){
               try {
-                //console.log('into');
-                //console.log('done');
-                return await octokit.request('POST /repos/skparab1/snake/issues', {
-                    owner: 'skparab1',
-                    repo: 'snake',
-                    title: sendname,
-                    body: senddata,
-                  })
+                const resp = await fetch(awslambda, {
+                  method: 'POST',
+                  body: {
+                    'name': name,
+                    'point': score,
+                    'time': elapsedtime,
+                  }
+                }).then(r => r.json())
+                console.log(resp)
                 } catch(error) {
                   notif = document.getElementById('notif');
                   notif.style.display = "block";
-                  notif.innerHTML = '<h3 style="color:rgb(255, 255, 255);">Unable to write to database. Check your network connection. '+error+'</h3>';
+                  notif.innerHTML = '<h3 style="color:rgb(255, 255, 255);">Unable to write to glacier lambda database: ' + awslambda + '. Check your network connection. '+error+'</h3>';
                   //console.log('couldnt send');
                 }
             };
@@ -1063,8 +1056,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       } catch(error) {
         notif = document.getElementById('notif');
         notif.style.display = "block";
-        notif.innerHTML = '<h3 style="color:rgb(255, 255, 255);">Unable to write to database. Check your network connection. '+error+'</h3>';
-
+        notif.innerHTML = '<h3 style="color:rgb(255, 255, 255);">Unable to write to glacier lambda database: ' + awslambda + '.Check your network connection. '+error+'</h3>';
       }
       
       // this might be cool if we do it right
