@@ -31,6 +31,7 @@ app.get("/", function (req, res) {
 
 app.post("/glacier/snake/score/upload", async function (req, res) {
   let { name, point, time } = req.body;
+  name = name || 'unknown';
   console.log(name, point, time, req.body.name)
   let player = await collection.find({name: name}).limit(1).toArray()
   if (player.length === 0) {
