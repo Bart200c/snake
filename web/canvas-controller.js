@@ -310,7 +310,7 @@ function closeintro(){
   (async () => {
     let intro = document.getElementById('introducer');
     let namer = document.getElementById('name');
-    namer = namer.value;
+    namer = namer.value || 'unknown';
     localStorage.setItem("name", namer);
     let intro1 = document.getElementById('introducer-cover');
     // intro1.style.display = "none";

@@ -23,7 +23,7 @@ const client = new GlacierClient(glacierGateway, {
 let collection = client.namespace(appns).dataset('snake').collection('player')
 
 
-app.use(express.static('../'))
+app.use(express.static('./web'))
 
 app.get("/", function (req, res) {
   res.send('glacier app snake');

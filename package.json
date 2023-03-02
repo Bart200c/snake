@@ -4,15 +4,14 @@
     "description": "Sample Glacier app running on AWS Lambda",
     "main": "main.js",
     "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "glacier",
     "license": "MIT",
     "dependencies": {
-      "@glacier-network/client": "^0.2.0",
-      "aws-serverless-express": "^3.3.8",
-      "cors": "^2.8.5",
-      "express": "^4.17.1"
+        "@glacier-network/client": "^0.2.0",
+        "@vendia/serverless-express": "^4.10.1",
+        "cors": "^2.8.5",
+        "express": "^4.17.1"
     }
-  }
-  
+}
