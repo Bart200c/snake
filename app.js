@@ -13,7 +13,6 @@ app.use(cors())
 
 const { GlacierClient } = require('@glacier-network/client');
 
-// glacierapps 7550908759586c421f6e4c9a5b364ad6a8102e81ced28e71240411f9a64c3711
 const privateKey = process.env.GLACIER_APP_PRIVATEKEY;
 const glacierGateway = process.env.GLACIER_GATEWAY;
 const appns = process.env.GLACIER_APP_NS;
